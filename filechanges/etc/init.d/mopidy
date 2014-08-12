@@ -38,6 +38,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 
 do_start()
 {
+    setcap CAP_NET_BIND_SERVICE+ep $DAEMON
     start-stop-daemon --start --quiet --name $NAME --pidfile $PIDFILE \
         --startas $DAEMON --test > /dev/null \
         || return 1
@@ -49,6 +50,7 @@ do_start()
 
 do_stop()
 {
+    setcap CAP_NET_BIND_SERVICE-ep $DAEMON
     start-stop-daemon --stop --quiet --name $NAME --pidfile $PIDFILE \
         --retry=TERM/30/KILL/5
     RETVAL="$?"
